@@ -22,8 +22,8 @@ public class Timetable {
 
         int coachCount = 1;
 
-        for (CounterOfTrainings counterOfTrainings:counterOfCoach){
-            if (counterOfTrainings.getCoach().equals(trainingSession.getCoach())){
+        for (CounterOfTrainings counterOfTrainings:counterOfCoach) {
+            if (counterOfTrainings.getCoach().equals(trainingSession.getCoach())) {
                 coachCount = counterOfTrainings.getTraingsCount();
                 counterOfCoach.remove(counterOfTrainings);
             }
@@ -35,9 +35,9 @@ public class Timetable {
     }
 
     public LinkedList<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
-        if (timetable.containsKey(dayOfWeek)){
+        if (timetable.containsKey(dayOfWeek)) {
             return new LinkedList<>(timetable.get(dayOfWeek).values());
-        }else{
+        } else {
             return null;
         }
     }
@@ -46,9 +46,9 @@ public class Timetable {
         return timetable.get(dayOfWeek).getOrDefault(timeOfDay, null);
     }
 
-    public int getCountByCoaches(Coach coach){
-        for (CounterOfTrainings counterOfTrainings:counterOfCoach){
-            if (counterOfTrainings.getCoach().equals(coach)){
+    public int getCountByCoaches(Coach coach) {
+        for (CounterOfTrainings counterOfTrainings:counterOfCoach) {
+            if (counterOfTrainings.getCoach().equals(coach)) {
                 return counterOfTrainings.getTraingsCount();
             }
         }
