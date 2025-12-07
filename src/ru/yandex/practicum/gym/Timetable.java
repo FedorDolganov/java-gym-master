@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Timetable {
 
-    private HashMap<DayOfWeek, TreeMap<TimeOfDay, TrainingSession>> timetable = new HashMap<>();
+    private Map<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
 
     private TreeSet<CounterOfTrainings> counterOfCoach = new TreeSet<>();
 
@@ -14,11 +14,13 @@ public class Timetable {
 
         Coach coach = trainingSession.getCoach();
 
-        TreeMap<TimeOfDay, TrainingSession> treeMap = timetable.getOrDefault(trainingSession.getDayOfWeek(), new TreeMap<>());
+        TreeMap<TimeOfDay, List<TrainingSession>> treeMap = timetable.getOrDefault(trainingSession.getDayOfWeek(), new TreeMap<>());
 
-        treeMap.put(timeOfDay, trainingSession);
+        List<TrainingSession> trainingSessionList = treeMap.getOrDefault(timeOfDay, new ArrayList<>());
 
-        treeMap.put(timeOfDay, treeMap.get(timeOfDay));
+        trainingSessionList.add(trainingSession);
+
+        treeMap.put(timeOfDay, trainingSessionList);
 
         int coachCount = 1;
 
@@ -34,16 +36,16 @@ public class Timetable {
         timetable.put(trainingSession.getDayOfWeek(), treeMap);
     }
 
-    public LinkedList<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
+    public TreeMap<TimeOfDay, List<TrainingSession>> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
         if (timetable.containsKey(dayOfWeek)) {
-            return new LinkedList<>(timetable.get(dayOfWeek).values());
+            return timetable.get(dayOfWeek);
         } else {
-            return null;
+            return new TreeMap<>();
         }
     }
 
-    public TrainingSession getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
-        return timetable.get(dayOfWeek).getOrDefault(timeOfDay, null);
+    public List<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
+        return timetable.get(dayOfWeek).getOrDefault(timeOfDay, new ArrayList<>());
     }
 
     public int getCountByCoaches(Coach coach) {

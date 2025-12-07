@@ -20,7 +20,7 @@ public class TimetableTest {
         timetable.addNewTrainingSession(singleTrainingSession);
 
         Assertions.assertEquals(1, timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size());
-        Assertions.assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        Assertions.assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -49,11 +49,11 @@ public class TimetableTest {
 
         Assertions.assertEquals(1, timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size());
         Assertions.assertTrue(
-                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).getFirst().getTimeOfDay().getHours() == 13
-                && timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(1).getTimeOfDay().getHours() == 20
+                !timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(new TimeOfDay(13, 0)).isEmpty()
+                && !timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(new TimeOfDay(20, 0)).isEmpty()
 
         );
-        Assertions.assertNull(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY));
+        Assertions.assertTrue(timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).isEmpty());
     }
 
     @Test
@@ -67,8 +67,7 @@ public class TimetableTest {
 
         timetable.addNewTrainingSession(singleTrainingSession);
 
-        Assertions.assertNotNull(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY, new TimeOfDay(13, 0)));
-        Assertions.assertNull(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY, new TimeOfDay(14, 0)));
+        Assertions.assertFalse(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY, new TimeOfDay(13, 0)).isEmpty());
+        Assertions.assertTrue(timetable.getTrainingSessionsForDayAndTime(DayOfWeek.MONDAY, new TimeOfDay(14, 0)).isEmpty());
     }
-
 }
